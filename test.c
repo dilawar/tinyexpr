@@ -175,7 +175,7 @@ void test_syntax() {
         {"1*2(1+4", 4},
         {"a+5", 1},
         {"A+5", 1},
-        {"Aa+5", 1},
+        /** {"Aa+5", 1}, */ // No longer an error.
         {"1^^5", 3},
         {"1**5", 3},
         {"sin(cos5", 8},
@@ -793,13 +793,12 @@ void test_uppercase( ) {
          * already been done. */
         p = 1; g = 0.1; L = 10; len = 2; dia = 0.2;
         const double r = te_eval(n); 
+        lequal(-714.7, r);
         printf("Result:\n\t%f\n", r);
         te_free(n);
     } else {
-        /* Show the user where the error is at. */
-        printf("\t%*s^\nError near here", err-1, "");
+        printf("FAILED: %s (%d)\n", expr, err);
     }
-    return 0;
 }
 
 
