@@ -765,6 +765,44 @@ void test_logic() {
     }
 }
 
+// Uppercase test
+double H( double a )
+{
+    return 1 + pow(a, 3.0);
+}
+
+void test_uppercase( ) {
+    const char* expr = "p + g + L + len + dia + H(1-L)";
+    printf("Evaluating:\n\t%s\n", expr);
+
+    /* This shows an example where the variables
+     * x and y are bound at eval-time. */
+    double p, g, L, len, dia;
+    te_variable vars[] = {{"p", &p}, {"g", &g}, {"L", &L}, {"len", &len}, {"dia", &dia}
+        , { "H", H, TE_FUNCTION1}
+    };
+
+
+    /* This will compile the expression and check for errors. */
+    int err;
+    te_expr *n = te_compile(expr, vars, 6, &err);
+
+    if (n) {
+        /* The variables can be changed here, and eval can be called as many
+         * times as you like. This is fairly efficient because the parsing has
+         * already been done. */
+        p = 1; g = 0.1; L = 10; len = 2; dia = 0.2;
+        const double r = te_eval(n); 
+        printf("Result:\n\t%f\n", r);
+        te_free(n);
+    } else {
+        /* Show the user where the error is at. */
+        printf("\t%*s^\nError near here", err-1, "");
+    }
+    return 0;
+}
+
+
 
 int main(int argc, char *argv[])
 {
@@ -780,6 +818,7 @@ int main(int argc, char *argv[])
     lrun("Pow", test_pow);
     lrun("Combinatorics", test_combinatorics);
     lrun("Logic", test_logic);
+    lrun("Uppercase", test_uppercase);
     lresults();
 
     return lfails != 0;
