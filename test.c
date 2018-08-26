@@ -45,6 +45,9 @@ void test_results() {
         {"1 ", 1},
         {"(1)", 1},
 
+        {"1e-1", 0.1},
+        {"1e1", 10},
+
         {"pi", 3.14159},
         {"atan(1)*4 - pi", 0},
         {"e", 2.71828},
@@ -174,7 +177,7 @@ void test_syntax() {
         {"1*2(+4", 4},
         {"1*2(1+4", 4},
         {"a+5", 1},
-        {"A+5", 1},
+        /** {"A+5", 1}, */
         /** {"Aa+5", 1}, */ // No longer an error.
         {"1^^5", 3},
         {"1**5", 3},
@@ -773,7 +776,6 @@ double H( double a )
 
 void test_uppercase( ) {
     const char* expr = "p + g + L + len + dia + H(1-L)";
-    printf("Evaluating:\n\t%s\n", expr);
 
     /* This shows an example where the variables
      * x and y are bound at eval-time. */
@@ -794,7 +796,6 @@ void test_uppercase( ) {
         p = 1; g = 0.1; L = 10; len = 2; dia = 0.2;
         const double r = te_eval(n); 
         lequal(-714.7, r);
-        printf("Result:\n\t%f\n", r);
         te_free(n);
     } else {
         printf("FAILED: %s (%d)\n", expr, err);
